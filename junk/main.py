@@ -36,7 +36,7 @@ class Ron(MDApp):
         self.file_manager = MDFileManager(
             exit_manager=self.exit_manager,
             select_path=self.select_path,
-            preview=True,
+            # previous=True,
         )
 
     def build(self):
