@@ -26,8 +26,10 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.button import MDIconButton
 from kivymd.icon_definitions import md_icons
 
+
 class Ron(MDApp):
     pass
+
 
 if __name__ == "__main__":
     Ron().run()
