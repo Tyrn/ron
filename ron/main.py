@@ -83,6 +83,8 @@ class Tab(MDFloatLayout, MDTabsBase):
 
 
 class Ron(MDApp):
+    icons = list(md_icons.keys())[15:30]
+
     @staticmethod
     def close_title(title):
         return f"[ref={title}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {title}"
@@ -93,9 +95,12 @@ class Ron(MDApp):
         return Builder.load_file("main.kv")
 
     def on_start(self):
+        self.root.ids.tabs.lock_swiping = True
+
         tree_tab = TreeTab(title="Files")
         self.root.ids.tabs.add_widget(tree_tab)
         tree_tab.file_manager_open()
+
         self.root.ids.tabs.add_widget(Tab(title=self.close_title("Book")))
         self.root.ids.tabs.add_widget(Tab(title=self.close_title("Details")))
 
