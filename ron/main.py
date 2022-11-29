@@ -46,6 +46,7 @@ class Ron(MDApp):
         return Builder.load_file("main.kv")
 
     def on_start(self):
+        self.root.ids.tabs.add_widget(Tab(title="Files"))
         for name_tab in self.icons:
             self.root.ids.tabs.add_widget(
                 Tab(
