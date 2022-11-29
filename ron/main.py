@@ -38,7 +38,7 @@ class Tab(MDFloatLayout, MDTabsBase):
 
 
 class Ron(MDApp):
-    icons = list(md_icons.keys())[15:30]
+    icons = list(md_icons.keys())[15:16]
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
