@@ -38,7 +38,9 @@ class Tab(MDFloatLayout, MDTabsBase):
 
 
 class Ron(MDApp):
-    icons = list(md_icons.keys())[15:16]
+    @staticmethod
+    def close_title(title):
+        return f"[ref={title}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {title}"
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
@@ -47,12 +49,8 @@ class Ron(MDApp):
 
     def on_start(self):
         self.root.ids.tabs.add_widget(Tab(title="Files"))
-        for name_tab in self.icons:
-            self.root.ids.tabs.add_widget(
-                Tab(
-                    title=f"[ref={name_tab}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {name_tab}"
-                )
-            )
+        self.root.ids.tabs.add_widget(Tab(title=self.close_title("Book")))
+        self.root.ids.tabs.add_widget(Tab(title=self.close_title("Details")))
 
     def on_ref_press(
         self,
