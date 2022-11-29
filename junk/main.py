@@ -25,12 +25,14 @@ MDBoxLayout:
         on_ref_press: app.on_ref_press(*args)
 """
 
+
 class FakeModalView:
     def open(self):
         pass
 
     def dismiss(self):
         pass
+
 
 class TreeTab(MDFloatLayout, MDTabsBase):
     """Class implementing file system browser."""
@@ -42,7 +44,9 @@ class TreeTab(MDFloatLayout, MDTabsBase):
         self.file_manager = MDFileManager(
             exit_manager=self.exit_manager, select_path=self.select_path
         )
-        self.file_manager._window_manager = FakeModalView()  # replace the ModalView that the file manager uses
+        self.file_manager._window_manager = (
+            FakeModalView()
+        )  # replace the ModalView that the file manager uses
 
     def file_manager_open(self):
         self.add_widget(self.file_manager)  # just add the file manager to the tab
