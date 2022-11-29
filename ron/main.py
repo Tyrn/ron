@@ -4,7 +4,7 @@ Audio Book Player for Linux and Android.
 import kivy
 
 kivy.require("2.1.0")
-# from kivy.utils import platform
+from kivy.utils import platform
 
 # from kivy.storage.jsonstore import JsonStore
 from kivy.lang import Builder
@@ -95,7 +95,8 @@ class Ron(MDApp):
         return Builder.load_file("main.kv")
 
     def on_start(self):
-        self.root.ids.tabs.lock_swiping = True
+        if platform != "android":
+            self.root.ids.tabs.lock_swiping = True
 
         tree_tab = TreeTab(title="Files")
         self.root.ids.tabs.add_widget(tree_tab)
