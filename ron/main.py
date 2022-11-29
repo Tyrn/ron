@@ -8,10 +8,12 @@ kivy.require("2.1.0")
 
 # from kivy.storage.jsonstore import JsonStore
 from kivy.lang import Builder
+from kivy.core.window import Window
 
 # from kivy.properties import ObjectProperty
 ## from kivy.uix.floatlayout import FloatLayout
 from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.filemanager import MDFileManager
 
 # from kivy.uix.gridlayout import GridLayout
 
@@ -31,6 +33,49 @@ from kivymd.uix.tab import MDTabsBase
 # from kivymd.uix.button import MDIconButton
 from kivymd.font_definitions import fonts
 from kivymd.icon_definitions import md_icons
+from kivymd.toast import toast
+import os
+
+
+class TreeTab(MDFloatLayout, MDTabsBase):
+    """Class implementing file system browser."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Window.bind(on_keyboard=self.events)
+        self.manager_open = False
+        self.file_manager = MDFileManager(
+            exit_manager=self.exit_manager, select_path=self.select_path
+        )
+
+    def file_manager_open(self):
+        self.file_manager.show(os.path.expanduser("~"))  # output manager to the screen
+        self.manager_open = True
+
+    def select_path(self, path: str):
+        """
+        It will be called when you click on the file name
+        or the catalog selection button.
+
+        :param path: path to the selected directory or file;
+        """
+
+        self.exit_manager()
+        toast(path)
+
+    def exit_manager(self, *args):
+        """Called when the user reaches the root of the directory tree."""
+
+        self.manager_open = False
+        self.file_manager.close()
+
+    def events(self, instance, keyboard, keycode, text, modifiers):
+        """Called when buttons are pressed on the mobile device."""
+
+        if keyboard in (1001, 27):
+            if self.manager_open:
+                self.file_manager.back()
+        return True
 
 
 class Tab(MDFloatLayout, MDTabsBase):
@@ -48,7 +93,9 @@ class Ron(MDApp):
         return Builder.load_file("main.kv")
 
     def on_start(self):
-        self.root.ids.tabs.add_widget(Tab(title="Files"))
+        tree_tab = TreeTab(title="Files")
+        self.root.ids.tabs.add_widget(tree_tab)
+        tree_tab.file_manager_open()
         self.root.ids.tabs.add_widget(Tab(title=self.close_title("Book")))
         self.root.ids.tabs.add_widget(Tab(title=self.close_title("Details")))
 
