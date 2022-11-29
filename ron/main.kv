@@ -1,0 +1,20 @@
+#:kivy 2.1.0
+
+MDBoxLayout:
+    orientation: "vertical"
+
+    MDTopAppBar:
+        title: "Example Tabs"
+
+    MDTabs:
+        id: tabs
+        on_ref_press: app.on_ref_press(*args)
+
+
+<Tab>
+
+    MDIconButton:
+        id: icon
+        icon: app.icons[0]
+        icon_size: "48sp"
+        pos_hint: {"center_x": .5, "center_y": .5}
