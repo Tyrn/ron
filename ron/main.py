@@ -36,6 +36,19 @@ from kivymd.icon_definitions import md_icons
 from kivymd.toast import toast
 import os
 
+USERPATH = os.path.expanduser("~")
+
+if platform == "android":
+    from android.storage import primary_external_storage_path
+    from android.storage import secondary_external_storage_path
+    from android.permissions import request_permissions, Permission
+
+    USERPATH = primary_external_storage_path()
+    # USERPATH = secondary_external_storage_path()
+    request_permissions(
+        [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
+    )
+
 
 class TreeTab(MDFloatLayout, MDTabsBase):
     """Class implementing file system browser."""
@@ -49,7 +62,7 @@ class TreeTab(MDFloatLayout, MDTabsBase):
         )
 
     def file_manager_open(self):
-        self.file_manager.show(os.path.expanduser("~"))  # output manager to the screen
+        self.file_manager.show(USERPATH)  # output manager to the screen
         self.manager_open = True
 
     def select_path(self, path: str):
