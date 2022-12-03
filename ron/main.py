@@ -28,6 +28,20 @@ from kivymd.icon_definitions import md_icons
 import co_lang
 from co_lang import T
 import gc
+import os
+
+USERPATH = os.path.expanduser("~")
+
+if platform == "android":
+    from android.storage import primary_external_storage_path
+    from android.storage import secondary_external_storage_path
+    from android.permissions import request_permissions, Permission
+
+    USERPATH = primary_external_storage_path()
+    # USERPATH = secondary_external_storage_path()
+    request_permissions(
+        [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
+    )
 
 
 ACTION_ICON = "eye"
