@@ -249,28 +249,30 @@ class Ron(MDApp):
         # Clock.schedule_once(lambda dt: self.discovery_request(30, 5), 5)
 
     def discovery_clean(self):
-        for item in self.root.ids.ps_list.children:
-            print(f"item: {item.text}")
-            # yyy item.stop_plot()
-        self.root.ids.ps_list.clear_widgets()
-        self.root.ids.pd_main_label.text = T("co-no-ps-selected")
-        self.root.ids.pd_mac_label.text = ""
-        gc.collect()
+        pass
+        # for item in self.root.ids.ps_list.children:
+        #     print(f"item: {item.text}")
+        #     # yyy item.stop_plot()
+        # self.root.ids.ps_list.clear_widgets()
+        # self.root.ids.pd_main_label.text = T("co-no-ps-selected")
+        # self.root.ids.pd_mac_label.text = ""
+        # gc.collect()
 
     def discovery_request(self, item_count=9, delay=3):
-        self.discovery_clean()
+        pass
+        # self.discovery_clean()
 
-        tab_list = self.root.ids.ps_tab_list
-        Ron.select_tab(tab_list)
+        # tab_list = self.root.ids.ps_tab_list
+        # Ron.select_tab(tab_list)
 
-        self.root.ids.ps_toolbar.animate_action_button = True
-        self.animate_await()
-        Clock.schedule_interval(lambda dt: self.animate_await(), 1.0)
+        # self.root.ids.ps_toolbar.animate_action_button = True
+        # self.animate_await()
+        # Clock.schedule_interval(lambda dt: self.animate_await(), 1.0)
 
-        tab_details = self.root.ids.ps_tab_details
-        Clock.schedule_once(
-            lambda dt: tab_list.discover(tab_details, item_count), delay
-        )
+        # tab_details = self.root.ids.ps_tab_details
+        # Clock.schedule_once(
+        #     lambda dt: tab_list.discover(tab_details, item_count), delay
+        # )
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         """Called when switching tabs.
