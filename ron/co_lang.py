@@ -15,8 +15,8 @@ _EN = {
     "co-app-name": "Ron Audio Book Player",
     "co-app-running-on": "Running on",
     "co-output-current-l": "output current",
-    "co-supplies": "List",
-    "co-supply-details": "Details",
+    "co-supplies": "Folders",
+    "co-supply-details": "Book",
 }
 
 
@@ -33,8 +33,8 @@ _RU = {
     "co-app-name": "Ron, проигрыватель аудиокниг",
     "co-app-running-on": "Выполняется на",
     "co-output-current-l": "ток в нагрузке",
-    "co-supplies": "Список",
-    "co-supply-details": "Детали",
+    "co-supplies": "Папки",
+    "co-supply-details": "Книга",
 }
 
 
