@@ -53,7 +53,7 @@ class PowerListItem(TwoLineAvatarIconListItem):
         ids.pd_main_label.text = self.text + f",  {T('co-output-current-l')}"
         ids.pd_mac_label.text = self.secondary_text
         # yyy self.select_plot()
-        Contero.select_tab(ids.ps_tab_details)
+        Ron.select_tab(ids.ps_tab_details)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -109,7 +109,7 @@ class TabDetails(FloatLayout, MDTabsBase):
         trace_inhouse_events()
 
 
-class Contero(MDApp):
+class Ron(MDApp):
     menu_main = ObjectProperty()
 
     def menu_main_open(self, button):
@@ -247,7 +247,7 @@ class Contero(MDApp):
         self.discovery_clean()
 
         tab_list = self.root.ids.ps_tab_list
-        Contero.select_tab(tab_list)
+        Ron.select_tab(tab_list)
 
         self.root.ids.ps_toolbar.animate_action_button = True
         self.animate_await()
@@ -271,4 +271,4 @@ class Contero(MDApp):
 
 
 if __name__ == "__main__":
-    Contero().run()
+    Ron().run()

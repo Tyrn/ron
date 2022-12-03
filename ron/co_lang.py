@@ -3,7 +3,7 @@
 
 
 _EN = {
-    "co-toolbar-title": "Power Supplies",
+    "co-toolbar-title": "Ron Audio",
     "co-no-ps-selected": "No power supply selected",
     "co-ps-label-1": "Power supply",
     "co-exit": "Exit",
@@ -12,7 +12,7 @@ _EN = {
     "co-details-l": "details",
     "co-about": "About",
     "co-close-button": "CLOSE",
-    "co-app-name": "Contero",
+    "co-app-name": "Ron Audio Book Player",
     "co-app-running-on": "Running on",
     "co-output-current-l": "output current",
     "co-supplies": "List",
@@ -21,7 +21,7 @@ _EN = {
 
 
 _RU = {
-    "co-toolbar-title": "Источники",
+    "co-toolbar-title": "Ron Аудио",
     "co-no-ps-selected": "Источник не выбран",
     "co-ps-label-1": "Источник",
     "co-exit": "Выход",
@@ -30,7 +30,7 @@ _RU = {
     "co-details-l": "детали",
     "co-about": "О приложении",
     "co-close-button": "ЗАКРЫТЬ",
-    "co-app-name": "Contero",
+    "co-app-name": "Ron, проигрыватель аудиокниг",
     "co-app-running-on": "Выполняется на",
     "co-output-current-l": "ток в нагрузке",
     "co-supplies": "Список",
