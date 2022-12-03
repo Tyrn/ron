@@ -1,160 +1,355 @@
 """
-Audio Book Player for Linux and Android.
+Power supply manager for Linux and Android.
 """
 import kivy
 
 kivy.require("2.1.0")
 from kivy.utils import platform
 
-# from kivy.storage.jsonstore import JsonStore
+from kivy.storage.jsonstore import JsonStore
 from kivy.lang import Builder
-from kivy.core.window import Window
+from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
 
-# from kivy.properties import ObjectProperty
-## from kivy.uix.floatlayout import FloatLayout
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.filemanager import MDFileManager
-
-# from kivy.uix.gridlayout import GridLayout
-
-# import weakref
-# from kivy.clock import Clock
+import weakref
+from kivy.clock import Clock
 from kivymd.app import MDApp
-
-# from kivy.metrics import dp
-# from kivymd.uix.dialog import MDDialog
-# from kivymd.uix.menu import MDDropdownMenu
+from kivy.metrics import dp
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.tab import MDTabsBase
-
-# from kivymd.uix.list import IRightBodyTouch
-# from kivymd.uix.list import TwoLineAvatarIconListItem
-# from kivymd.uix.selectioncontrol import MDCheckbox
-# from kivymd.uix.button import MDFlatButton
-# from kivymd.uix.button import MDIconButton
-from kivymd.font_definitions import fonts
+from kivymd.uix.list import IRightBodyTouch
+from kivymd.uix.list import TwoLineAvatarIconListItem
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDIconButton
 from kivymd.icon_definitions import md_icons
-from kivymd.toast import toast
-import os
-
-USERPATH = os.path.expanduser("~")
-
-if platform == "android":
-    from android.storage import primary_external_storage_path
-    from android.storage import secondary_external_storage_path
-    from android.permissions import request_permissions, Permission
-
-    USERPATH = primary_external_storage_path()
-    # USERPATH = secondary_external_storage_path()
-    request_permissions(
-        [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
-    )
+import co_lang
+from co_lang import T
+from math import sin
+# from kivy_garden.graph import MeshStemPlot
+# from co_utils import rand_mac
+import gc
 
 
-class FakeModalView:
-    def open(self):
+ACTION_ICON = "eye"
+
+
+XMAX = 100
+
+
+# def power_readings():
+#     """Returns a provider of the next input data value."""
+#     chain = [sin(x / (XMAX * 0.1)) * 0.1 + 0.6 for x in range(0, XMAX + 1)]
+#     cnt = 0
+#
+#     def next():
+#         nonlocal chain, cnt
+#         next_reading = chain[cnt % len(chain)]
+#         cnt += 1
+#         return next_reading
+#
+#     return next
+#
+#
+# def power_points():
+#     """Returns a provider of the next renderable points set."""
+#     next_reading = power_readings()
+#     stretch = []
+#
+#     def next():
+#         nonlocal stretch, next_reading
+#         stretch.append(next_reading())
+#         if len(stretch) > XMAX + 1:
+#             stretch.pop(0)
+#         x = XMAX + 1 - len(stretch)
+#         points = []
+#         for y in stretch:
+#             points.append((x, y))
+#             points.append((x, 0))
+#             x += 1
+#         return points
+#
+#     return next
+#
+#
+# # class PowerPlot(ObjectProperty):
+# #    """Intended as a ListItem property."""
+# #    def __init__(self, **kwargs):
+# #        super(PowerPlot, self).__init__(**kwargs)
+# class PowerPlot:
+#     """Intended as a ListItem property."""
+#
+#     def __init__(self):
+#         self._plot = None
+#         self._next_points = power_points()
+#
+#     def __del__(self):
+#         print("*** *** PowerPlot.__del__ *** ***")
+#
+#     def remove_all_plots(self):
+#         common_graph = MDApp.get_running_app().root.ids.graph_test
+#         for plot in common_graph.plots:
+#             common_graph.remove_plot(plot)
+#
+#     def select_plot(self):
+#         self.remove_all_plots()
+#         common_graph = MDApp.get_running_app().root.ids.graph_test
+#         common_graph.add_plot(self._plot)
+#
+#     def start_plot(self):
+#         self.get_next_points()
+#         Clock.schedule_interval(self.get_next_points, 3.0)
+#
+#     def stop_plot(self):
+#         self.remove_all_plots()
+#         Clock.unschedule(self.get_next_points)
+#
+#     def get_next_points(self, dt=None):
+#         self._plot.points = self._next_points()
+#
+#
+# class PowerGrid(GridLayout):
+#     """Layout containing a Graph."""
+
+
+class RightCheckbox(IRightBodyTouch, MDCheckbox):
+    """Custom right container."""
+
+
+class RightSelectButton(IRightBodyTouch, MDIconButton):
+    """Custom right container."""
+
+    def on_release(self):
+        self.wm_select_details()()
+        # .select_details()
+
+
+class PowerListItem(TwoLineAvatarIconListItem):
+    """The engaged power supply item."""
+
+    def select_details(self):
+        ids = MDApp.get_running_app().root.ids
+        ids.pd_main_label.text = self.text + f",  {T('co-output-current-l')}"
+        ids.pd_mac_label.text = self.secondary_text
+        # yyy self.select_plot()
+        Contero.select_tab(ids.ps_tab_details)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            if touch.is_double_tap:
+                self.select_details()
+                return True
+        return super(PowerListItem, self).on_touch_down(touch)
+
+
+class TabList(FloatLayout, MDTabsBase):
+    """The engaged power supplies tab."""
+
+    def surfacing(self, tab_text):
         pass
 
-    def dismiss(self):
-        pass
+    def discover(self, tab_details, cnt):
+        ids = MDApp.get_running_app().root.ids
+        ids.ps_toolbar.animate_action_button = False
+        ids.pd_main_label.text = T("co-no-ps-selected")
+        ids.pd_mac_label.text = ""
+        for i in range(cnt):
+            item = PowerListItem(
+                text=T("co-ps-label-1") + f" {i + 1:>2}", secondary_text="rand_mac()"
+            )
+            # item.details__plot = PowerPlot()
+            # yyy item.start_plot()
+            # Adding a button manually to the item
+            # (and passing down the item handle).
+            btn_to = RightSelectButton()
+            btn_to.wm_select_details = weakref.WeakMethod(item.select_details)
+            item.add_widget(btn_to)
+
+            item.ids.item_left.icon = "flash"
+            ids.ps_list.add_widget(item)
 
 
-class TreeTab(MDFloatLayout, MDTabsBase):
-    """Class implementing file system browser."""
+def trace_inhouse_events():
+    events = Clock.get_events()
+    for i, event in enumerate(events):
+        junk = f"{event}"
+        if (
+            junk.find("get_next_points") >= 0
+            or junk.find("animate_await") >= 0
+            or junk.find("discover") >= 0
+        ):
+            print(f"({i}) Event (on_tab_switch): {event}")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Window.bind(on_keyboard=self.events)
-        self.manager_open = False
-        self.file_manager = MDFileManager(
-            exit_manager=self.exit_manager, select_path=self.select_path
+
+class TabDetails(FloatLayout, MDTabsBase):
+    """The engaged power supply details tab."""
+
+    def surfacing(self, tab_text):
+        trace_inhouse_events()
+
+
+class Contero(MDApp):
+    menu_main = ObjectProperty()
+
+    def menu_main_open(self, button):
+        self.menu_main.caller = button
+        self.menu_main.open()
+
+    about_dialog = ObjectProperty()
+
+    def about_dialog_close(self, *args):
+        self.about_dialog.dismiss(force=True)
+
+    def menu_item_about_callback(self, text):
+        self.menu_main.dismiss()
+        self.about_dialog = MDDialog(
+            title=T("co-app-name"),
+            size_hint=(0.8, 0.3),
+            text=T("co-app-running-on") + f" {platform}",
+            buttons=[
+                MDFlatButton(
+                    text=T("co-close-button"),
+                    on_release=self.about_dialog_close,
+                ),
+            ],
         )
-        self.file_manager._window_manager = (
-            FakeModalView()
-        )  # replace the ModalView that the file manager uses
+        self.about_dialog.open()
 
-    def file_manager_open(self):
-        self.add_widget(self.file_manager)  # just add the file manager to the tab
-        self.file_manager.show(USERPATH)  # output manager to the screen
-        self.manager_open = True
+    def menu_main_build(self):
+        items = [
+            {
+                "viewclass": "OneLineListItem",
+                "text": T("co-about"),
+                "height": dp(48),
+                "on_release": lambda x=T("co-about"): self.menu_item_about_callback(x),
+            }
+        ]
+        self.menu_main = MDDropdownMenu(
+            width_mult=3,
+            items=items,
+            caller=self.root.ids.ps_toolbar.ids.right_actions.children[2],
+        )
 
-    def select_path(self, path: str):
-        """
-        It will be called when you click on the file name
-        or the catalog selection button.
+    menu_lang = ObjectProperty()
 
-        :param path: path to the selected directory or file;
-        """
+    def menu_locale_open(self, button):
+        self.menu_lang.caller = button
+        self.menu_lang.open()
 
-        self.exit_manager()
-        toast(path)
+    def menu_item_lang_callback(self, lng):
+        self.menu_lang.dismiss()
+        co_lang.set_language(lng)
+        store = JsonStore("co_T.json")
+        store.put("co-lang", name=lng)
 
-    def exit_manager(self, *args):
-        """Called when the user reaches the root of the directory tree."""
-
-        self.manager_open = False
-        self.file_manager.close()
-
-    def events(self, instance, keyboard, keycode, text, modifiers):
-        """Called when buttons are pressed on the mobile device."""
-
-        if keyboard in (1001, 27):
-            if self.manager_open:
-                self.file_manager.back()
-        return True
-
-
-class Tab(MDFloatLayout, MDTabsBase):
-    """Class implementing content for a tab."""
-
-
-class Ron(MDApp):
-    icons = list(md_icons.keys())[15:30]
+    def menu_locale_build(self):
+        items = []
+        for lng in co_lang.languages():
+            items.append(
+                {
+                    "viewclass": "OneLineListItem",
+                    "text": lng,
+                    "height": dp(48),
+                    "on_release": lambda x=lng: self.menu_item_lang_callback(x),
+                }
+            )
+        self.menu_lang = MDDropdownMenu(
+            width_mult=2,
+            items=items,
+            caller=self.root.ids.ps_toolbar.ids.right_actions.children[1],
+        )
 
     @staticmethod
-    def close_title(title):
-        return f"[ref={title}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {title}"
+    def select_tab(destination_tab):
+        tabs = MDApp.get_running_app().root.ids.ps_tabs
+        # Just like your on_release.
+        tabs.tab_bar.parent.dispatch(
+            "on_tab_switch",
+            destination_tab,
+            destination_tab.tab_label,
+            "Tab Text",
+        )
+        tabs.tab_bar.parent.carousel.load_slide(destination_tab)
+
+    def pulse_icon_counter(self):
+        icons = "reply", "reply-all"
+        i = 0
+
+        def next():
+            nonlocal icons, i
+            icon = icons[i % len(icons)]
+            i += 1
+            return icon
+
+        return next
+
+    def animate_await(self):
+        toolbar = MDApp.get_running_app().root.ids.ps_toolbar
+        if toolbar.animate_action_button:
+            toolbar.icon = toolbar.next_icon()
+            return True
+        toolbar.icon = ACTION_ICON
+        return False
 
     def build(self):
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Red"
+        co_lang.set_language("EN")
+        store = JsonStore("co_T.json")
+        if store.exists("co-lang"):
+            lng = store.get("co-lang")["name"]
+            co_lang.set_language(lng)
+
         return Builder.load_file("main.kv")
 
     def on_start(self):
+        self.theme_cls.primary_palette = "Gray"
+        # self.theme_cls.primary_hue = '900'
         if platform != "android":
-            self.root.ids.tabs.lock_swiping = True
+            self.root.ids.ps_tabs.lock_swiping = True
 
-        tree_tab = TreeTab(title="Files")
-        self.root.ids.tabs.add_widget(tree_tab)
-        tree_tab.file_manager_open()
+        def on_start(interval):
+            self.menu_main_build()
+            self.menu_locale_build()
 
-        self.root.ids.tabs.add_widget(Tab(title=self.close_title("Book")))
-        self.root.ids.tabs.add_widget(Tab(title=self.close_title("Details")))
+        Clock.schedule_once(on_start)
+        # Clock.schedule_once(lambda dt: self.discovery_request(30, 5), 5)
 
-    def on_ref_press(
-        self,
-        instance_tabs,
-        instance_tab_label,
-        instance_tab,
-        instance_tab_bar,
-        instance_carousel,
-    ):
+    def discovery_clean(self):
+        for item in self.root.ids.ps_list.children:
+            print(f"item: {item.text}")
+            # yyy item.stop_plot()
+        self.root.ids.ps_list.clear_widgets()
+        self.root.ids.pd_main_label.text = T("co-no-ps-selected")
+        self.root.ids.pd_mac_label.text = ""
+        gc.collect()
+
+    def discovery_request(self, item_count=9, delay=3):
+        self.discovery_clean()
+
+        tab_list = self.root.ids.ps_tab_list
+        Contero.select_tab(tab_list)
+
+        self.root.ids.ps_toolbar.animate_action_button = True
+        self.animate_await()
+        Clock.schedule_interval(lambda dt: self.animate_await(), 1.0)
+
+        tab_details = self.root.ids.ps_tab_details
+        Clock.schedule_once(
+            lambda dt: tab_list.discover(tab_details, item_count), delay
+        )
+
+    def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
+        """Called when switching tabs.
+
+        :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+        :param instance_tab: <__main__.Tab object>;
+        :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+        :param tab_text: text or name icon of tab;
         """
-        The method will be called when the ``on_ref_press`` event
-        occurs when you, for example, use markup text for tabs.
 
-        :param instance_tabs: <kivymd.uix.tab.MDTabs object>
-        :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>
-        :param instance_tab: <__main__.Tab object>
-        :param instance_tab_bar: <kivymd.uix.tab.MDTabsBar object>
-        :param instance_carousel: <kivymd.uix.tab.MDTabsCarousel object>
-        """
-
-        # Removes a tab by clicking on the close icon on the left.
-        for instance_tab in instance_carousel.slides:
-            if instance_tab.title == instance_tab_label.text:
-                instance_tabs.remove_widget(instance_tab_label)
-                break
+        instance_tab.surfacing(tab_text)
 
 
 if __name__ == "__main__":
-    Ron().run()
+    Contero().run()

@@ -1,30 +1,107 @@
 #:kivy 2.1.0
-
-MDBoxLayout:
+#:import T co_lang.T
+#:import ACTION_ICON __main__.ACTION_ICON
+#:import XMAX __main__.XMAX
+BoxLayout:
     orientation: "vertical"
-
-    MDTopAppBar:
-        title: "Example Tabs"
-
     MDTabs:
-        id: tabs
-        on_ref_press: app.on_ref_press(*args)
+        id: ps_tabs
+        on_tab_switch: app.on_tab_switch(*args)
+        TabList:
+            id: ps_tab_list
+            icon: "flash"
+            text: T("co-supplies")
+            MDScrollView:
+                MDList:
+                    id: ps_list
+        TabDetails:
+            id: ps_tab_details
+            icon: "equalizer"
+            text: T("co-supply-details")
+            MDScrollView:
+                GridLayout:
+                    padding: dp(4)
+                    cols: 1
+                    size_hint_y: None
+                    #height: self.minimum_height
+                    #PowerGrid:
+                    #    id: pg_test
+                    #    cols: 1
+                    #    size_hint_y: None
+                    #    height: dp(128)
+                    #    #size_hint_x: None
+                    #    #width: 600
+                    #    Graph:
+                    #        id: graph_test
+                    #        x_ticks_minor :5
+                    #        x_tics_major :25
+                    #        y_ticks_major :1
+                    #        y_grid_label: True
+                    #        x_grid_label: True
+                    #        padding :5
+                    #        x_grid: True
+                    #        y_grid: True
+                    #        xmin: -0
+                    #        xmax: XMAX
+                    #        ymin: 0
+                    #        ymax: 1
+                    ColoredLabel:
+                        id: pd_main_label
+                        text: T("co-no-ps-selected")
+                        size_hint: 1, None
+                        size: self.texture_size
+                        #padding: dp(24), dp(12)
+                        color: 0, 0, 0, 1
+                    ColoredLabel:
+                        id: pd_mac_label
+                        text: ""
+                        size_hint: 1, None
+                        size: self.texture_size
+                        color: 0, 0, 1, 1
+                    #MDIconButton:
+                    #    icon: "moon-waning-crescent"
+                    #    user_font_size: "24sp"
+                    #    theme_text_color: "Custom"
+                    #    text_color: 1, 0, 1, .5
+    MDBottomAppBar:
+        MDTopAppBar:
+            id: ps_toolbar
+            title: T("co-toolbar-title")
+            icon: ACTION_ICON
+            type: "bottom"
+            animate_action_button: False
+            next_icon: app.pulse_icon_counter() # Not a callback.
+            on_action_button: app.discovery_request()
+            right_action_items: [ ['minus-box-outline', lambda x: app.discovery_clean()], ['earth-box', lambda x: app.menu_locale_open(x)], ['dots-vertical', lambda x: app.menu_main_open(x)], ]
 
 
-<Tab>
-    MDIconButton:
-        id: icon
-        icon: app.icons[0]
-        icon_size: "48sp"
-        pos_hint: {"center_x": .5, "center_y": .5}
-
-
-<ScrollView>
-    # bar_margin: 5
-    # bar_width: 15
-    # bar_color: .0, .8, .0, 1
-    # bar_inactive_color: .5, .5, .5, 1
+<MDScrollView>
+    bar_margin: 5
+    bar_width: 15
+    bar_color: .0, .8, .0, 1
+    bar_inactive_color: .5, .5, .5, 1
     effect_cls: "ScrollEffect"
     scroll_type: ["bars", "content"]
-    # scroll_distance: 5
-    # scroll_timeout: 50
+    scroll_distance: 5
+    scroll_timeout: 50
+
+
+<ColoredLabel@MDLabel>:
+    canvas.before:
+        Color:
+            #rgba: root.background_color
+            rgba: 0, 0, 0, .1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<PowerListItem>:
+    IconLeftWidget:
+        id: item_left
+        icon: "earth"
+    #RightSelectButton:
+
+
+<RightSelectButton>:
+    icon: "arrow-right"
