@@ -27,91 +27,10 @@ from kivymd.uix.button import MDIconButton
 from kivymd.icon_definitions import md_icons
 import co_lang
 from co_lang import T
-from math import sin
-# from kivy_garden.graph import MeshStemPlot
-# from co_utils import rand_mac
 import gc
 
 
 ACTION_ICON = "eye"
-
-
-XMAX = 100
-
-
-# def power_readings():
-#     """Returns a provider of the next input data value."""
-#     chain = [sin(x / (XMAX * 0.1)) * 0.1 + 0.6 for x in range(0, XMAX + 1)]
-#     cnt = 0
-#
-#     def next():
-#         nonlocal chain, cnt
-#         next_reading = chain[cnt % len(chain)]
-#         cnt += 1
-#         return next_reading
-#
-#     return next
-#
-#
-# def power_points():
-#     """Returns a provider of the next renderable points set."""
-#     next_reading = power_readings()
-#     stretch = []
-#
-#     def next():
-#         nonlocal stretch, next_reading
-#         stretch.append(next_reading())
-#         if len(stretch) > XMAX + 1:
-#             stretch.pop(0)
-#         x = XMAX + 1 - len(stretch)
-#         points = []
-#         for y in stretch:
-#             points.append((x, y))
-#             points.append((x, 0))
-#             x += 1
-#         return points
-#
-#     return next
-#
-#
-# # class PowerPlot(ObjectProperty):
-# #    """Intended as a ListItem property."""
-# #    def __init__(self, **kwargs):
-# #        super(PowerPlot, self).__init__(**kwargs)
-# class PowerPlot:
-#     """Intended as a ListItem property."""
-#
-#     def __init__(self):
-#         self._plot = None
-#         self._next_points = power_points()
-#
-#     def __del__(self):
-#         print("*** *** PowerPlot.__del__ *** ***")
-#
-#     def remove_all_plots(self):
-#         common_graph = MDApp.get_running_app().root.ids.graph_test
-#         for plot in common_graph.plots:
-#             common_graph.remove_plot(plot)
-#
-#     def select_plot(self):
-#         self.remove_all_plots()
-#         common_graph = MDApp.get_running_app().root.ids.graph_test
-#         common_graph.add_plot(self._plot)
-#
-#     def start_plot(self):
-#         self.get_next_points()
-#         Clock.schedule_interval(self.get_next_points, 3.0)
-#
-#     def stop_plot(self):
-#         self.remove_all_plots()
-#         Clock.unschedule(self.get_next_points)
-#
-#     def get_next_points(self, dt=None):
-#         self._plot.points = self._next_points()
-#
-#
-# class PowerGrid(GridLayout):
-#     """Layout containing a Graph."""
 
 
 class RightCheckbox(IRightBodyTouch, MDCheckbox):

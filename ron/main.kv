@@ -1,7 +1,6 @@
 #:kivy 2.1.0
 #:import T co_lang.T
 #:import ACTION_ICON __main__.ACTION_ICON
-#:import XMAX __main__.XMAX
 BoxLayout:
     orientation: "vertical"
     MDTabs:
@@ -24,27 +23,7 @@ BoxLayout:
                     cols: 1
                     size_hint_y: None
                     #height: self.minimum_height
-                    #PowerGrid:
-                    #    id: pg_test
-                    #    cols: 1
-                    #    size_hint_y: None
-                    #    height: dp(128)
-                    #    #size_hint_x: None
-                    #    #width: 600
-                    #    Graph:
-                    #        id: graph_test
-                    #        x_ticks_minor :5
-                    #        x_tics_major :25
-                    #        y_ticks_major :1
-                    #        y_grid_label: True
-                    #        x_grid_label: True
-                    #        padding :5
-                    #        x_grid: True
-                    #        y_grid: True
-                    #        xmin: -0
-                    #        xmax: XMAX
-                    #        ymin: 0
-                    #        ymax: 1
+                    # Something useful: Audiobook View, for instance.
                     ColoredLabel:
                         id: pd_main_label
                         text: T("co-no-ps-selected")
@@ -54,7 +33,7 @@ BoxLayout:
                         color: 0, 0, 0, 1
                     ColoredLabel:
                         id: pd_mac_label
-                        text: ""
+                        text: "Boo!"
                         size_hint: 1, None
                         size: self.texture_size
                         color: 0, 0, 1, 1
