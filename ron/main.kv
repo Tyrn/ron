@@ -29,6 +29,17 @@ MDBoxLayout:
                         size: self.size
                         pos: self.pos
                 on_selection: ps_tab_list.selected(ps_filechooser.selection)
+            MDBoxLayout:
+                id: box
+                spacing: "56dp"
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .5}
+                MDFloatingActionButton:
+                    id: fc_playdir
+                    icon: "folder"
+                MDFloatingActionButton:
+                    id: fc_playfile
+                    icon: "file"
         TabDetails:
             id: ps_tab_details
             icon: "book"

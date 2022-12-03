@@ -241,6 +241,7 @@ class Ron(MDApp):
     def on_start(self):
         self.theme_cls.primary_palette = "Gray"
         # self.theme_cls.primary_hue = '900'
+        self.theme_cls.material_style = "M3"
         if platform != "android":
             self.root.ids.ps_tabs.lock_swiping = True
 
