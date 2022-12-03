@@ -11,6 +11,15 @@ BoxLayout:
             icon: "folder"
             text: T("co-supplies")
             MDScrollView:
+                FileChooserIconView:
+                    id: ps_filechooser
+                    canvas.before:
+                        Color:
+                            rgba: .3, .3, .3, 1
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+                    on_selection: ps_tab_list.selected(ps_filechooser.selection)
                 #MDList:
                 #    id: ps_list
         TabDetails:

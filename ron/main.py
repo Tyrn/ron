@@ -80,6 +80,9 @@ class PowerListItem(TwoLineAvatarIconListItem):
 class TabList(FloatLayout, MDTabsBase):
     """The engaged power supplies tab."""
 
+    def selected(self, filename):
+        print(f"SELECTED: {filename}")
+
     def surfacing(self, tab_text):
         pass
 
