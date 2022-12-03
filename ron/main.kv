@@ -1,8 +1,18 @@
 #:kivy 2.1.0
 #:import T co_lang.T
 #:import ACTION_ICON __main__.ACTION_ICON
+
+#:set dark_gray (.3, .3, .3, 1)
+
 BoxLayout:
     orientation: "vertical"
+    MDTopAppBar:
+        id: ps_toolbar
+        title: T("co-toolbar-title")
+        icon: ACTION_ICON
+        animate_action_button: False
+        next_icon: app.pulse_icon_counter() # Not a callback.
+        right_action_items: [ ['minus-box-outline', lambda x: app.discovery_clean()], ['earth-box', lambda x: app.menu_locale_open(x)], ['dots-vertical', lambda x: app.menu_main_open(x)], ]
     MDTabs:
         id: ps_tabs
         on_tab_switch: app.on_tab_switch(*args)
@@ -15,7 +25,7 @@ BoxLayout:
                     id: ps_filechooser
                     canvas.before:
                         Color:
-                            rgba: .3, .3, .3, 1
+                            rgba: dark_gray
                         Rectangle:
                             size: self.size
                             pos: self.pos
@@ -51,16 +61,6 @@ BoxLayout:
                 #    #    user_font_size: "24sp"
                 #    #    theme_text_color: "Custom"
                 #    #    text_color: 1, 0, 1, .5
-    MDBottomAppBar:
-        MDTopAppBar:
-            id: ps_toolbar
-            title: T("co-toolbar-title")
-            icon: ACTION_ICON
-            type: "bottom"
-            animate_action_button: False
-            next_icon: app.pulse_icon_counter() # Not a callback.
-            on_action_button: app.discovery_request()
-            right_action_items: [ ['minus-box-outline', lambda x: app.discovery_clean()], ['earth-box', lambda x: app.menu_locale_open(x)], ['dots-vertical', lambda x: app.menu_main_open(x)], ]
 
 
 <MDScrollView>
