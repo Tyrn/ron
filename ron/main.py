@@ -81,7 +81,7 @@ class TabList(FloatLayout, MDTabsBase):
     """The engaged power supplies tab."""
 
     def selected(self, filename):
-        print(f"SELECTED: {filename}")
+        print(f"SeleCteD: {filename}")
 
     def surfacing(self, tab_text):
         pass
@@ -243,6 +243,8 @@ class Ron(MDApp):
         # self.theme_cls.primary_hue = '900'
         if platform != "android":
             self.root.ids.ps_tabs.lock_swiping = True
+
+        self.root.ids.ps_filechooser.rootpath = USERPATH
 
         def on_start(interval):
             self.menu_main_build()
