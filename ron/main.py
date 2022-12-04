@@ -49,8 +49,8 @@ ACTION_ICON = "eye"
 CURRENT_TAB_TEXT = T("co-folders")
 
 
-class TabList(FloatLayout, MDTabsBase):
-    """The engaged power supplies tab."""
+class TabFiletree(FloatLayout, MDTabsBase):
+    """File and directory chooser."""
 
     def selected(self, filename):
         print(f"SeleCteD: {filename}")
@@ -60,8 +60,8 @@ class TabList(FloatLayout, MDTabsBase):
         CURRENT_TAB_TEXT = tab_text
 
 
-class TabDetails(FloatLayout, MDTabsBase):
-    """The engaged power supply details tab."""
+class TabBook(FloatLayout, MDTabsBase):
+    """Audiobook representation."""
 
     def surfacing(self, tab_text):
         global CURRENT_TAB_TEXT
