@@ -42,17 +42,14 @@ MDBoxLayout:
                     Rectangle:
                         size: self.size
                         pos: self.pos
-            MDBoxLayout:
-                id: box
-                spacing: "56dp"
-                adaptive_size: True
-                pos_hint: {"center_x": .5, "center_y": .5}
-                MDFloatingActionButton:
-                    id: fc_playdir
-                    icon: "folder"
-                MDFloatingActionButton:
-                    id: fc_playfile
-                    icon: "file"
+            MDFloatingActionButton:
+                id: fc_playdir
+                icon: "folder"
+                pos_hint: {"center_x": .4, "center_y": .5}
+            MDFloatingActionButton:
+                id: fc_playfile
+                icon: "file"
+                pos_hint: {"center_x": .6, "center_y": .5}
         TabDetails:
             id: ps_tab_details
             icon: "book"
