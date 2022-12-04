@@ -48,6 +48,7 @@ ACTION_ICON = "eye"
 
 CURRENT_TAB_TEXT = T("co-folders")
 
+
 class TabList(FloatLayout, MDTabsBase):
     """The engaged power supplies tab."""
 

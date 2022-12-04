@@ -1,4 +1,5 @@
-"""Labels in supported languages
+"""
+Labels in supported languages
 """
 
 

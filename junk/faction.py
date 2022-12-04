@@ -23,7 +23,7 @@ if platform == "android":
     )
 
 
-KV = '''
+KV = """
 #:kivy 2.1.0
 #:set dark_gray (.5, .5, .5, 1)
 
@@ -54,7 +54,7 @@ MDBoxLayout:
             id: ps_tab_details
             icon: "book"
             MDScrollView:
-'''
+"""
 
 
 class TabList(FloatLayout, MDTabsBase):
