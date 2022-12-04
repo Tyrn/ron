@@ -46,6 +46,7 @@ if platform == "android":
 
 ACTION_ICON = "eye"
 
+CURRENT_TAB_TEXT = T("co-folders")
 
 class TabList(FloatLayout, MDTabsBase):
     """The engaged power supplies tab."""
@@ -54,14 +55,16 @@ class TabList(FloatLayout, MDTabsBase):
         print(f"SeleCteD: {filename}")
 
     def surfacing(self, tab_text):
-        pass
+        global CURRENT_TAB_TEXT
+        CURRENT_TAB_TEXT = tab_text
 
 
 class TabDetails(FloatLayout, MDTabsBase):
     """The engaged power supply details tab."""
 
     def surfacing(self, tab_text):
-        pass
+        global CURRENT_TAB_TEXT
+        CURRENT_TAB_TEXT = tab_text
 
 
 class Ron(MDApp):
@@ -173,10 +176,12 @@ class Ron(MDApp):
         # Clock.schedule_once(lambda dt: self.discovery_request(30, 5), 5)
 
     def dir_deploy_book(self):
-        pass
+        if CURRENT_TAB_TEXT == T("co-folders"):
+            print("dir_deploy_book()")
 
     def file_deploy_book(self):
-        pass
+        if CURRENT_TAB_TEXT == T("co-folders"):
+            print("file_deploy_book()")
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         """Called when switching tabs.
@@ -187,7 +192,7 @@ class Ron(MDApp):
         :param tab_text: text or name icon of tab;
         """
 
-        instance_tab.surfacing(tab_text)
+        instance_tab.surfacing(instance_tab.text)
 
 
 if __name__ == "__main__":
