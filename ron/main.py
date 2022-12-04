@@ -48,12 +48,14 @@ ACTION_ICON = "eye"
 
 CURRENT_TAB_TEXT = T("co-folders")
 
+SELECTED_FILE = None
 
 class TabFiletree(FloatLayout, MDTabsBase):
     """File and directory chooser."""
 
     def selected(self, filename):
-        print(f"SeleCteD: {filename}")
+        global SELECTED_FILE
+        SELECTED_FILE = filename
 
     def surfacing(self, tab_text):
         global CURRENT_TAB_TEXT
@@ -178,11 +180,12 @@ class Ron(MDApp):
 
     def dir_deploy_book(self):
         if CURRENT_TAB_TEXT == T("co-folders"):
-            print("dir_deploy_book()")
+            current_dir = self.root.ids.ps_filechooser.path
+            print(f"dir_deploy_book({current_dir})")
 
     def file_deploy_book(self):
         if CURRENT_TAB_TEXT == T("co-folders"):
-            print("file_deploy_book()")
+            print(f"file_deploy_book({SELECTED_FILE})")
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         """Called when switching tabs.
