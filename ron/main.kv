@@ -12,12 +12,12 @@ MDBoxLayout:
         icon: ACTION_ICON
         animate_action_button: False
         next_icon: app.pulse_icon_counter() # Not a callback.
-        right_action_items: [ ['minus-box-outline', lambda x: app.discovery_clean()], ['earth-box', lambda x: app.menu_locale_open(x)], ['dots-vertical', lambda x: app.menu_main_open(x)], ]
+        right_action_items: [ ['folder', lambda x: app.dir_deploy_book()], ['file', lambda x: app.file_deploy_book()], ['earth-box', lambda x: app.menu_locale_open(x)], ['dots-vertical', lambda x: app.menu_main_open(x)], ]
     MDTabs:
         id: ps_tabs
         on_tab_switch: app.on_tab_switch(*args)
         TabList:
-            id: ps_tab_list
+            id: ps_tab_filetree
             icon: "folder"
             text: T("co-supplies")
             FileChooserListView:
@@ -29,19 +29,19 @@ MDBoxLayout:
                         size: self.size
                         pos: self.pos
                 on_selection: ps_tab_list.selected(ps_filechooser.selection)
-            MDBoxLayout:
-                id: box
-                spacing: "56dp"
-                adaptive_size: True
-                pos_hint: {"center_x": .5, "center_y": .5}
-                MDFloatingActionButton:
-                    id: fc_playdir
-                    icon: "folder"
-                MDFloatingActionButton:
-                    id: fc_playfile
-                    icon: "file"
+            #MDBoxLayout:
+            #    id: box
+            #    spacing: "56dp"
+            #    adaptive_size: True
+            #    pos_hint: {"center_x": .5, "center_y": .5}
+            #    MDFloatingActionButton:
+            #        id: fc_playdir
+            #        icon: "folder"
+            #    MDFloatingActionButton:
+            #        id: fc_playfile
+            #        icon: "file"
         TabDetails:
-            id: ps_tab_details
+            id: ps_tab_book
             icon: "book"
             text: T("co-supply-details")
             MDScrollView:

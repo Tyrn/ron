@@ -67,7 +67,7 @@ class PowerListItem(TwoLineAvatarIconListItem):
         ids.pd_main_label.text = self.text + f",  {T('co-output-current-l')}"
         ids.pd_mac_label.text = self.secondary_text
         # yyy self.select_plot()
-        Ron.select_tab(ids.ps_tab_details)
+        Ron.select_tab(ids.ps_tab_book)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -254,31 +254,11 @@ class Ron(MDApp):
         Clock.schedule_once(on_start)
         # Clock.schedule_once(lambda dt: self.discovery_request(30, 5), 5)
 
-    def discovery_clean(self):
+    def dir_deploy_book(self):
         pass
-        # for item in self.root.ids.ps_list.children:
-        #     print(f"item: {item.text}")
-        #     # yyy item.stop_plot()
-        # self.root.ids.ps_list.clear_widgets()
-        # self.root.ids.pd_main_label.text = T("co-no-ps-selected")
-        # self.root.ids.pd_mac_label.text = ""
-        # gc.collect()
 
-    def discovery_request(self, item_count=9, delay=3):
+    def file_deploy_book(self):
         pass
-        # self.discovery_clean()
-
-        # tab_list = self.root.ids.ps_tab_list
-        # Ron.select_tab(tab_list)
-
-        # self.root.ids.ps_toolbar.animate_action_button = True
-        # self.animate_await()
-        # Clock.schedule_interval(lambda dt: self.animate_await(), 1.0)
-
-        # tab_details = self.root.ids.ps_tab_details
-        # Clock.schedule_once(
-        #     lambda dt: tab_list.discover(tab_details, item_count), delay
-        # )
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         """Called when switching tabs.
