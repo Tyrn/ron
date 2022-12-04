@@ -23,6 +23,43 @@ if platform == "android":
     )
 
 
+KV = '''
+#:kivy 2.1.0
+#:set dark_gray (.5, .5, .5, 1)
+
+MDBoxLayout:
+    orientation: "vertical"
+    MDTabs:
+        id: ps_tabs
+        TabList:
+            id: ps_tab_list
+            icon: "folder"
+            FileChooserListView:
+                id: ps_filechooser
+                canvas.before:
+                    Color:
+                        rgba: dark_gray
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            MDBoxLayout:
+                id: box
+                spacing: "56dp"
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .5}
+                MDFloatingActionButton:
+                    id: fc_playdir
+                    icon: "folder"
+                MDFloatingActionButton:
+                    id: fc_playfile
+                    icon: "file"
+        TabDetails:
+            id: ps_tab_details
+            icon: "book"
+            MDScrollView:
+'''
+
+
 class TabList(FloatLayout, MDTabsBase):
     """The engaged power supplies tab."""
 
@@ -33,7 +70,7 @@ class TabDetails(FloatLayout, MDTabsBase):
 
 class Ron(MDApp):
     def build(self):
-        return Builder.load_file("faction.kv")
+        return Builder.load_string(KV)
 
     def on_start(self):
         self.theme_cls.primary_palette = "Gray"
