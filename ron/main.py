@@ -49,6 +49,8 @@ ACTION_ICON = "eye"
 CURRENT_TAB_TEXT = T("co-folders")
 
 SELECTED_FILE = None
+CURRENT_PATH = None
+
 
 class TabFiletree(FloatLayout, MDTabsBase):
     """File and directory chooser."""
@@ -56,6 +58,12 @@ class TabFiletree(FloatLayout, MDTabsBase):
     def selected(self, filename):
         global SELECTED_FILE
         SELECTED_FILE = filename
+
+    def entered(self, path):
+        global CURRENT_PATH
+        CURRENT_PATH = path
+        label = MDApp.get_running_app().root.ids.ps_path
+        label.text = path
 
     def surfacing(self, tab_text):
         global CURRENT_TAB_TEXT

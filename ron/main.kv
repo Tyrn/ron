@@ -29,6 +29,7 @@ MDBoxLayout:
                         size: self.size
                         pos: self.pos
                 on_selection: ps_tab_filetree.selected(ps_filechooser.selection)
+                on_path: ps_tab_filetree.entered(ps_filechooser.path)
             #MDBoxLayout:
             #    id: box
             #    spacing: "56dp"
@@ -45,6 +46,9 @@ MDBoxLayout:
             icon: "book"
             text: T("co-book")
             MDScrollView:
+    MDLabel:
+        id: ps_path
+        size_hint_y: .03
 
 
 <MDScrollView>
