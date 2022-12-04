@@ -47,36 +47,6 @@ if platform == "android":
 ACTION_ICON = "eye"
 
 
-class RightCheckbox(IRightBodyTouch, MDCheckbox):
-    """Custom right container."""
-
-
-class RightSelectButton(IRightBodyTouch, MDIconButton):
-    """Custom right container."""
-
-    def on_release(self):
-        self.wm_select_details()()
-        # .select_details()
-
-
-class PowerListItem(TwoLineAvatarIconListItem):
-    """The engaged power supply item."""
-
-    def select_details(self):
-        ids = MDApp.get_running_app().root.ids
-        ids.pd_main_label.text = self.text + f",  {T('co-output-current-l')}"
-        ids.pd_mac_label.text = self.secondary_text
-        # yyy self.select_plot()
-        Ron.select_tab(ids.ps_tab_book)
-
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
-            if touch.is_double_tap:
-                self.select_details()
-                return True
-        return super(PowerListItem, self).on_touch_down(touch)
-
-
 class TabList(FloatLayout, MDTabsBase):
     """The engaged power supplies tab."""
 
@@ -86,44 +56,12 @@ class TabList(FloatLayout, MDTabsBase):
     def surfacing(self, tab_text):
         pass
 
-    def discover(self, tab_details, cnt):
-        ids = MDApp.get_running_app().root.ids
-        ids.ps_toolbar.animate_action_button = False
-        ids.pd_main_label.text = T("co-no-ps-selected")
-        ids.pd_mac_label.text = ""
-        for i in range(cnt):
-            item = PowerListItem(
-                text=T("co-ps-label-1") + f" {i + 1:>2}", secondary_text="rand_mac()"
-            )
-            # item.details__plot = PowerPlot()
-            # yyy item.start_plot()
-            # Adding a button manually to the item
-            # (and passing down the item handle).
-            btn_to = RightSelectButton()
-            btn_to.wm_select_details = weakref.WeakMethod(item.select_details)
-            item.add_widget(btn_to)
-
-            item.ids.item_left.icon = "flash"
-            ids.ps_list.add_widget(item)
-
-
-def trace_inhouse_events():
-    events = Clock.get_events()
-    for i, event in enumerate(events):
-        junk = f"{event}"
-        if (
-            junk.find("get_next_points") >= 0
-            or junk.find("animate_await") >= 0
-            or junk.find("discover") >= 0
-        ):
-            print(f"({i}) Event (on_tab_switch): {event}")
-
 
 class TabDetails(FloatLayout, MDTabsBase):
     """The engaged power supply details tab."""
 
     def surfacing(self, tab_text):
-        trace_inhouse_events()
+        pass
 
 
 class Ron(MDApp):
@@ -208,26 +146,6 @@ class Ron(MDApp):
             "Tab Text",
         )
         tabs.tab_bar.parent.carousel.load_slide(destination_tab)
-
-    def pulse_icon_counter(self):
-        icons = "reply", "reply-all"
-        i = 0
-
-        def next():
-            nonlocal icons, i
-            icon = icons[i % len(icons)]
-            i += 1
-            return icon
-
-        return next
-
-    def animate_await(self):
-        toolbar = MDApp.get_running_app().root.ids.ps_toolbar
-        if toolbar.animate_action_button:
-            toolbar.icon = toolbar.next_icon()
-            return True
-        toolbar.icon = ACTION_ICON
-        return False
 
     def build(self):
         co_lang.set_language("EN")

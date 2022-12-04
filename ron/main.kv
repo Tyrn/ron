@@ -11,7 +11,7 @@ MDBoxLayout:
         title: T("co-toolbar-title")
         icon: ACTION_ICON
         animate_action_button: False
-        next_icon: app.pulse_icon_counter() # Not a callback.
+        #next_icon: app.pulse_icon_counter() # Not a callback.
         right_action_items: [ ['folder', lambda x: app.dir_deploy_book()], ['file', lambda x: app.file_deploy_book()], ['earth-box', lambda x: app.menu_locale_open(x)], ['dots-vertical', lambda x: app.menu_main_open(x)], ]
     MDTabs:
         id: ps_tabs
@@ -28,7 +28,7 @@ MDBoxLayout:
                     Rectangle:
                         size: self.size
                         pos: self.pos
-                on_selection: ps_tab_list.selected(ps_filechooser.selection)
+                on_selection: ps_tab_filetree.selected(ps_filechooser.selection)
             #MDBoxLayout:
             #    id: box
             #    spacing: "56dp"
