@@ -186,6 +186,9 @@ class Ron(MDApp):
         Clock.schedule_once(on_start)
         # Clock.schedule_once(lambda dt: self.discovery_request(30, 5), 5)
 
+    def on_stop(self):
+        print("Ron Quit")
+
     def dir_deploy_book(self):
         if CURRENT_TAB_TEXT == T("co-folders"):
             current_dir = self.root.ids.ps_filechooser.path
